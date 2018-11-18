@@ -1,0 +1,13 @@
+name: instagram.cr
+version: 0.1.0
+
+authors:
+  - Omar Roth <omarroth@hotmail.com>
+
+targets:
+  instagram.cr:
+    main: src/instagram.cr.cr
+
+crystal: 0.27.0
+
+license: MIT
