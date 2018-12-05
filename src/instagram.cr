@@ -1,9 +1,9 @@
 require "http"
 require "uri"
 require "json"
-require "./crypto"
+require "./instagram/*"
 
-USERNAME      = "emkruse1234"
+USERNAME      = "CHANGE ME"
 INSTAGRAM_URL = URI.parse("https://www.instagram.com")
 
 client = HTTP::Client.new(INSTAGRAM_URL)
@@ -28,6 +28,10 @@ rhx_gis = shared_data["rhx_gis"].as_s
 
 has_next_page = true
 i = 0
+
+if !Dir.exists? "dump"
+  Dir.mkdir "dump"
+end
 
 loop do
   has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
@@ -54,3 +58,5 @@ loop do
 
   print "Page: #{i / 50}\r"
 end
+
+puts
