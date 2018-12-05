@@ -16,13 +16,13 @@ end_cursor = nil
   user = Instagram.get_user_page("natgeo", end_cursor)
   end_cursor = user["edge_owner_to_timeline_media"]["page_info"]["end_cursor"].as_s?
   has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
+
+  File.write("#{i}.json", user.to_pretty_json)
   print "Page : #{i}\r"
 
   if !has_next_page
     break
   end
-
-  File.write("#{i}.json", user.to_pretty_json)
 end
 ```
 
