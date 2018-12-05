@@ -39,14 +39,16 @@ module Instagram
     headers["Cookie"] = "csrftoken=#{csrf_token}"
 
     user = shared_data["entry_data"]["ProfilePage"][0]["graphql"]["user"]
+
+    if !end_cursor
+      return user
+    end
+
     user_id = user["id"]
     rhx_gis = shared_data["rhx_gis"].as_s
 
-    has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
-
-    if !end_cursor
-      end_cursor = user["edge_owner_to_timeline_media"]["page_info"]["end_cursor"].as_s?
-    end
+    # has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
+    # end_cursor = user["edge_owner_to_timeline_media"]["page_info"]["end_cursor"].as_s?
 
     query_id = "50d3631032cf38ebe1a2d758524e3492"
     variables = {
