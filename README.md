@@ -1,6 +1,6 @@
 # instagram.cr
 
-Automatically scrape metadata from Instagram given username.
+Crystal library for interfacing with Instagram.
 
 ## Installation
 
