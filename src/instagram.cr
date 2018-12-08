@@ -1,4 +1,4 @@
-# "instagram.cr" (which is a library for interacting with Instagram)
+# "instagram.cr" (which is a library for crawling Instagram)
 # Copyright (C) 2018  Omar Roth
 
 # This program is free software: you can redistribute it and/or modify
@@ -40,17 +40,17 @@ module Instagram
 
     user = shared_data["entry_data"]["ProfilePage"][0]["graphql"]["user"]
 
+    user_id = user["id"]
+    rhx_gis = shared_data["rhx_gis"].as_s
+
     if !end_cursor
       return user
     end
 
-    user_id = user["id"]
-    rhx_gis = shared_data["rhx_gis"].as_s
-
     # has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
     # end_cursor = user["edge_owner_to_timeline_media"]["page_info"]["end_cursor"].as_s?
 
-    query_id = "50d3631032cf38ebe1a2d758524e3492"
+    query_id = "66eb9403e44cc12e5b5ecda48b667d41"
     variables = {
       "id"    => user_id,
       "first" => 50,
@@ -58,8 +58,8 @@ module Instagram
     }.to_json
 
     headers["X-Instagram-GIS"] = Crypto.sign(rhx_gis + ":" + variables)
-
     response = JSON.parse(client.get("/graphql/query/?query_hash=#{query_id}&variables=#{variables}", headers).body)
+
     user = response["data"]["user"]
 
     return user

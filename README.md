@@ -1,10 +1,16 @@
 # instagram.cr
 
-Crystal library for interfacing with Instagram.
+Crystal library for crawling Instagram.
 
 ## Installation
 
-TODO: Write installation instructions here
+Add this to your application's `shard.yml`:
+
+```yaml
+dependencies:
+  instagram:
+    github: omarroth/instagram.cr
+```
 
 ## Usage
 
