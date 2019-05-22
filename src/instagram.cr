@@ -28,7 +28,7 @@ module Instagram
     headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"
 
     html = client.get("/#{username}/", headers).body
-    shared_data = html.match(/sharedData = (?<info>.*?);<\/script>/).try &.["info"]
+    shared_data = html.match(/_sharedData = (?<info>.*?);<\/script>/).try &.["info"]
     if shared_data
       shared_data = JSON.parse(shared_data)
     else
@@ -41,14 +41,10 @@ module Instagram
     user = shared_data["entry_data"]["ProfilePage"][0]["graphql"]["user"]
 
     user_id = user["id"]
-    rhx_gis = shared_data["rhx_gis"].as_s
 
     if !end_cursor
       return user
     end
-
-    # has_next_page = user["edge_owner_to_timeline_media"]["page_info"]["has_next_page"].as_bool
-    # end_cursor = user["edge_owner_to_timeline_media"]["page_info"]["end_cursor"].as_s?
 
     query_id = "66eb9403e44cc12e5b5ecda48b667d41"
     variables = {
@@ -57,7 +53,6 @@ module Instagram
       "after" => end_cursor,
     }.to_json
 
-    headers["X-Instagram-GIS"] = Crypto.sign(rhx_gis + ":" + variables)
     response = JSON.parse(client.get("/graphql/query/?query_hash=#{query_id}&variables=#{variables}", headers).body)
 
     user = response["data"]["user"]
