@@ -1,6 +1,6 @@
 class Instagram::Crypto
   # TODO: Decompose this into non-obfuscode
-  private def self.i(e : Int32 | Nil, t : Int32)
+  private def self.i(e : Int32?, t : Int32)
     if !e
       return t
     end
@@ -10,7 +10,7 @@ class Instagram::Crypto
     return x
   end
 
-  private def self.a(e : Int32, t : Int32, n : Int32, r : Int32 | Nil, o : Int32, a : Int32)
+  private def self.a(e : Int32, t : Int32, n : Int32, r : Int32?, o : Int32, a : Int32)
     s = i(i(t, e), i(r, a))
 
     if o
@@ -20,7 +20,7 @@ class Instagram::Crypto
     m ||= 0
     o ||= 0
 
-    return i((s << o) | (s.to_u32 >> m.to_u32), n)
+    return i((s << o) | (s.to_u32! >> m.to_u32!), n)
   end
 
   private def self.u(e, t, n, r, o, i, s)
@@ -46,9 +46,9 @@ class Instagram::Crypto
     t = 0
     while t < r
       if n[t >> 5]?
-        n[t >> 5] |= (255 & e[t / 8].ord) << t % 32
+        n[t >> 5] |= (255 & e[t // 8].ord) << t % 32
       else
-        n[t >> 5] = (255 & e[t / 8].ord) << t % 32
+        n[t >> 5] = (255 & e[t // 8].ord) << t % 32
       end
 
       t += 8
@@ -64,7 +64,7 @@ class Instagram::Crypto
       e[t >> 5] = 128 << t % 32
     end
 
-    e[14 + (((t + 64).to_u32 >> 9.to_u32) << 4)] = t
+    e[14 + (((t + 64).to_u32! >> 9.to_u32!) << 4)] = t
 
     p = 1732584193
     f = -271733879
@@ -513,7 +513,7 @@ class Instagram::Crypto
 
     t = 0
     while t < r
-      n += ((e[t >> 5].to_u32 >> t.to_u32 % 32) & 255).chr
+      n += ((e[t >> 5].to_u32! >> t.to_u32! % 32) & 255).chr
       t += 8
     end
 
@@ -530,7 +530,7 @@ class Instagram::Crypto
     n = 0
     while n < e.size
       t = e[n].ord
-      r += "0123456789abcdef"[(t.to_u32 >> 4.to_u32) & 15]
+      r += "0123456789abcdef"[(t.to_u32! >> 4.to_u32!) & 15]
       r += "0123456789abcdef"[15 & t]
 
       n += 1
