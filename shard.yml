@@ -4,6 +4,6 @@ version: 0.2.1
 authors:
   - Omar Roth <omarroth@protonmail.com>
 
-crystal: 0.31.0
+crystal: 0.34.0
 
 license: GPLv3
